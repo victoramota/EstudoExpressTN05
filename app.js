@@ -8,31 +8,49 @@ let usuarios = [
     {nome: 'Victor', sobrenome: 'Athayde'},
 ];
 
-// http://locahost:3000/
+// http://localhost:3000/inicio/
 app.get('/inicio', (request, response) => {
     return response.send('Olá mundo.');
 });
 
+// http://localhost:3000/usuarios/
 app.get('/usuarios', (request, response) => {
     return response.json(usuarios);
 });
 
+// http://localhost:3000/usuarios/
 app.post('/usuarios', (request, response) => {
    const { nome, sobrenome } = request.body;
-
    const novoUsuario = usuarios.push({nome, sobrenome});
-
-   return response.json({nome, sobrenome});
+   return response.json({nome, sobrenome });
 });
 
+// http://localhost:3000/usuarios/usuario
 app.put("/usuarios/:nome", (request, response) => {
     const { nome } = request.params;
-
-    //Procurar qual tem nome igual e substituir o sobrenome
-
     const { sobrenome } = request.body;
+    
+    let changeSurname = usuarios.filter((usuario) => {
+        if (usuario.nome == nome){
+            return usuario.sobrenome = sobrenome
+        }
+    });
+    return response.json({nome, sobrenome});
 });
 
+// http://localhost:3000/usuarios/usuario
+app.delete("/usuarios/:nome", (request, response) => {
+    const { nome } = request.params;
+    const { sobrenome } = request.body;
+    
+    let deleteUser = usuarios.indexOf(nome.toString());
+    
+    usuarios.splice(deleteUser);
+    
+    return response.json(usuarios);
+});
+
+// Liga o servidor para ficar em modo listen as alterações
 app.listen(3000, () => {
     console.log('Servidor Rodando!');
 });
