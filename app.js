@@ -29,13 +29,10 @@ app.post('/usuarios', (request, response) => {
 app.put("/usuarios/:nome", (request, response) => {
     const { nome } = request.params;
     const { sobrenome } = request.body;
-    
-    let changeSurname = usuarios.filter((usuario) => {
-        if (usuario.nome == nome){
-            return usuario.sobrenome = sobrenome
-        }
-    });
-    return response.json({nome, sobrenome});
+
+    usuarios.filter( usuario => usuario.nome == nome).forEach( usuario => usuario.sobrenome = sobrenome);
+
+    return response.json(usuarios);
 });
 
 // http://localhost:3000/usuarios/usuario
@@ -43,9 +40,7 @@ app.delete("/usuarios/:nome", (request, response) => {
     const { nome } = request.params;
     const { sobrenome } = request.body;
     
-    let deleteUser = usuarios.indexOf(nome.toString());
-    
-    usuarios.splice(deleteUser);
+    usuarios = usuarios.filter( usuario => !(usuario.nome == nome && usuario.sobrenome == sobrenome))
     
     return response.json(usuarios);
 });
